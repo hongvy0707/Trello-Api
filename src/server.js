@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import express from 'express'
-import { CONNECT_DB, GET_DB } from '~/config/mongodb'
+import exitHook from 'async-exit-hook'
+import { CONNECT_DB, GET_DB, CLOSE_DB } from '~/config/mongodb'
 
 
 const START_SERVER = () => {
@@ -16,6 +17,10 @@ const START_SERVER = () => {
 
   app.listen(port, hostname, () => {
     console.log(`Hello Hongvy, I am running at http://${hostname}:${port}/`)
+  })
+
+  exitHook(() => {
+    CLOSE_DB()
   })
 }
 
